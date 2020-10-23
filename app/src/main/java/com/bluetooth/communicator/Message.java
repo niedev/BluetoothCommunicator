@@ -23,28 +23,41 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayDeque;
-
 import com.bluetooth.communicator.connection.BluetoothConnection;
 import com.bluetooth.communicator.connection.BluetoothMessage;
 import com.bluetooth.communicator.tools.BluetoothTools;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
 
+/**
+ * Message is used to send and receive messages using BluetoothCommunicator, in practice this class is a container for the messages that will be sent and received.
+ *
+ * In order to send a message the message object must always contain a header and the text or data (if it will be sent via BluetoothCommunicator.sendMessage text will be sent,
+ * if it will be sent via BluetoothCommunicator.sendData then data will be sent).
+ * If you want to specify a peer to send the message to (by default it is sent to all) then the peer must be set as receiver, you can do it in the constructor or through the Message.setReceiver method.
+ *
+ * To send a message there is no need to set the sender because the latter will not be sent, the receiver will recognize the sender through the channel in which he will receive the message,
+ * in any case it is something completely transparent. The sender is used only to identify the sender of received messages, and upon receipt of a message
+ * via the BluetoothCommunicator.onMessageReceived or onDataReceived method the sender will have already been automatically inserted into the message by the library, along with the text / data and header.
+ *
+ * Another way you can use the Message class is to represent messages (graphically, to save them, etc.), some Message constructors would not make sense for sending or receiving messages,
+ * but they can be useful for use as representation.
+ */
 public class Message implements Parcelable, Cloneable {
     public static final int HEADER_LENGTH = 1;
     private Context context;
     @Nullable
     private Peer sender;  // if we are the sender, the sender can be null
     @Nullable
-    private Peer receiver;  //se è null e il messaggio sta per essere inviato verrà inviato a tutti
+    private Peer receiver;  //if is null the message will be sent to all connected peers
     private String header;  // mandatory length: 1
     private byte[] data;
 
     /**
-     * @param context
+     * @param context a context
      * @param header  must contain 1 character to avoid errors
-     * @param text
+     * @param text the text of the message (it will be sent by sendMessage)
      */
     public Message(Context context, String header, @NonNull String text) {
         this.context = context;
@@ -52,14 +65,19 @@ public class Message implements Parcelable, Cloneable {
         this.data = text.getBytes(StandardCharsets.UTF_8);
     }
 
+    /**
+     *
+     * @param context a context
+     * @param text the text of the message (it will be sent by sendMessage)
+     */
     public Message(Context context, @NonNull String text) {
         this.context = context;
         this.data = text.getBytes(StandardCharsets.UTF_8);
     }
 
     /**
-     * @param context
-     * @param header  must contain 1 character to avoid errors
+     * @param context a context
+     * @param header must contain 1 character to avoid errors
      */
     public Message(Context context, String header, @NonNull byte[] data) {
         this.context = context;
@@ -67,13 +85,18 @@ public class Message implements Parcelable, Cloneable {
         this.data = data;
     }
 
+    /**
+     *
+     * @param context a context
+     * @param data the data of the message (it will be sent by sendData)
+     */
     public Message(Context context, @NonNull byte[] data) {
         this.context = context;
         this.data = data;
     }
 
     /**
-     * @param context
+     * @param context a context
      * @param header  must contain 1 character to avoid errors
      */
     public Message(Context context, String header, String text, @Nullable Peer receiver) {
@@ -84,7 +107,7 @@ public class Message implements Parcelable, Cloneable {
     }
 
     /**
-     * @param context
+     * @param context a context
      * @param header  must contain 1 character to avoid errors
      */
     public Message(Context context, String header, @NonNull byte[] data, @Nullable Peer receiver) {
@@ -95,9 +118,9 @@ public class Message implements Parcelable, Cloneable {
     }
 
     /**
-     * @param context
+     * @param context a context
      * @param header  must contain 1 character to avoid errors
-     * @param text
+     * @param text the text of the message (it will be sent by sendMessage)
      */
     public Message(Context context, @Nullable Peer sender, String header, @NonNull String text) {
         this.context = context;
@@ -113,7 +136,7 @@ public class Message implements Parcelable, Cloneable {
     }
 
     /**
-     * @param context
+     * @param context a context
      * @param header  must contain 1 character to avoid errors
      */
     public Message(Context context, @Nullable Peer sender, String header, @NonNull byte[] data) {
@@ -123,6 +146,11 @@ public class Message implements Parcelable, Cloneable {
         this.data = data;
     }
 
+    /**
+     * @param context a context
+     * @param sender the sender of the message
+     * @param data the data of the message (it will be sent by sendData)
+     */
     public Message(Context context, @Nullable Peer sender, @NonNull byte[] data) {
         this.context = context;
         this.sender = sender;
@@ -131,40 +159,98 @@ public class Message implements Parcelable, Cloneable {
 
 
     /**
+     * Sets the header, the header is a single character that can be used to differentiate the types of message,
+     * if you use a single type of message, just pick a random character for header and ignore it when receiving
+     * text messages or data messages.
      * @param header must contain 1 character to avoid errors
      */
     public void setHeader(String header) {
         this.header = BluetoothTools.fixLength(context, header, HEADER_LENGTH, BluetoothTools.FIX_TEXT);
     }
 
+    /**
+     * Returns the header
+     * @return header
+     */
     public String getHeader() {
         return header;
     }
 
+    /**
+     * Returns the sender
+     * @return sender
+     */
     public Peer getSender() {
         return sender;
     }
 
+    /**
+     * Sets the sender.
+     * To send a message there is no need to set the sender because the latter will not be sent, the receiver will recognize the sender through the channel in which he will receive the message,
+     * in any case it is something completely transparent. The sender is used only to identify the sender of received messages, and upon receipt of a message
+     * via the BluetoothCommunicator.onMessageReceived or onDataReceived method the sender will have already been automatically inserted into the message by the library, along with the text / data and header.
+     * A way this method can be useful is when you are using Message for representation (for the gui, for saving messages etc.)
+     * @param sender
+     */
     public void setSender(@Nullable Peer sender) {
         this.sender = sender;
     }
 
+    /**
+     * Returns the receiver
+     * @return receiver
+     */
+    @Nullable
+    public Peer getReceiver() {
+        return receiver;
+    }
+
+    /**
+     * Sets the receiver.
+     * If you want to specify a peer to send the message to (by default it is sent to all) then the peer must be set as receiver, you can do it in the constructor or through the Message.setReceiver method.
+     * @param receiver
+     */
+    public void setReceiver(@Nullable Peer receiver) {
+        this.receiver = receiver;
+    }
+
+    /**
+     * Return the text of the message
+     * @return text
+     */
     public String getText() {
         return new String(this.data, StandardCharsets.UTF_8);
     }
 
+    /**
+     * Sets the text of the message
+     * @param text
+     */
     public void setText(String text) {
         this.data = text.getBytes(StandardCharsets.UTF_8);
     }
 
+    /**
+     * Return the data of the message
+     * @return text
+     */
     public byte[] getData() {
         return this.data;
     }
 
+    /**
+     * Sets the data of the message
+     * @param data
+     */
     public void setData(byte[] data) {
         this.data = data;
     }
 
+    /**
+     * This method is used only by the library, there is no need for you to use it because the split and the reassembly of a long message is handled by the library.
+     * @param id
+     * @return the message splitted in more BluetoothMessages (or converted in one BluetoothMessage if the message is short enough)
+     */
     public ArrayDeque<BluetoothMessage> splitInBluetoothMessages(BluetoothMessage.SequenceNumber id) {
         int subDataLength = BluetoothConnection.SUB_MESSAGES_LENGTH - BluetoothMessage.TOTAL_LENGTH;
         ArrayDeque<byte[]> subDataArray = BluetoothTools.splitBytes(BluetoothTools.concatBytes(header.getBytes(StandardCharsets.UTF_8), data), subDataLength);
@@ -184,14 +270,6 @@ public class Message implements Parcelable, Cloneable {
         }
         return bluetoothMessages;
     }
-
-    /*public byte[] toBytes() {
-        Parcel parcel = Parcel.obtain();
-        writeToParcel(parcel, 0);
-        byte[] bytes = parcel.marshall();
-        parcel.recycle();
-        return bytes;
-    }*/
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -227,14 +305,5 @@ public class Message implements Parcelable, Cloneable {
         parcel.writeParcelable(sender, i);
         parcel.writeString(header);
         parcel.writeByteArray(this.data);
-    }
-
-    @Nullable
-    public Peer getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(@Nullable Peer receiver) {
-        this.receiver = receiver;
     }
 }

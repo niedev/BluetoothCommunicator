@@ -24,14 +24,17 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-
 import com.bluetooth.communicator.Message;
 import com.bluetooth.communicator.Peer;
 import com.bluetooth.communicator.tools.CustomCountDownTimer;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 
+/**
+ * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
+ * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
+ */
 public abstract class Channel {
     //timeouts of timers
     private final int RECONNECTION_TIMEOUT = 30000;

@@ -30,10 +30,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-
 import com.bluetooth.communicator.BluetoothCommunicator;
 import com.bluetooth.communicator.Message;
 import com.bluetooth.communicator.Peer;
@@ -43,7 +39,14 @@ import com.bluetooth.communicator.connection.Channel;
 import com.bluetooth.communicator.connection.server.BluetoothConnectionServer;
 import com.bluetooth.communicator.tools.BluetoothTools;
 
+import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
+/**
+ * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
+ * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
+ */
 public class BluetoothConnectionClient extends BluetoothConnection {
     public static final int ERROR = 0;
     public static final int CONNECTION_REJECTED = 1;

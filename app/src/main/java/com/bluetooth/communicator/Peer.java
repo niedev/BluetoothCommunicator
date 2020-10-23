@@ -25,11 +25,21 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.bluetooth.communicator.connection.Channel;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-import com.bluetooth.communicator.connection.Channel;
-
+/**
+ * This class represents a device that we can find, with which we can establish a connection, and communicate (obviously in that order).
+ *
+ * Usually there is no need to create a peer, in fact we should start using it when it is found (BluetoothCommunicator.onPeerFound), later we can use the
+ * found peer to request a connection (BluetoothCommunicator.connect) to the latter and if the peer accepts the connection request
+ * (BluetoothCommunicator.onConnectionSuccess) then we can start exchanging messages with him and eventually make a disconnection.
+ *
+ * To understand if one peer is equivalent to another we should compare the uniqueName of the two peers, this is because the device
+ * can vary over time and name could have a homonym.
+ */
 public class Peer implements Parcelable, Cloneable {
     @NonNull
     private String uniqueName;
@@ -41,9 +51,16 @@ public class Peer implements Parcelable, Cloneable {
     private boolean isReconnecting = false;
     private boolean isRequestingReconnection = false;
     private boolean isDisconnecting = false;
-    private ArrayList<Callback> clientCallbacks = new ArrayList<>();
+    //private ArrayList<Callback> clientCallbacks = new ArrayList<>();
     private Handler mainHandler;
 
+    /**
+     * This constructor is used internally by BluetoothCommunicator, you shouldn't create a Peer but instead use the peers founded by
+     * the discovery.
+     * @param device
+     * @param uniqueName
+     * @param isConnected
+     */
     public Peer(BluetoothDevice device, String uniqueName, boolean isConnected) {
         mainHandler = new Handler(Looper.getMainLooper());
         this.device = device;
@@ -57,6 +74,10 @@ public class Peer implements Parcelable, Cloneable {
         this.isConnected = isConnected;
     }
 
+    /**
+     * Copy constructor
+     * @param peer peer to copy
+     */
     public Peer(Peer peer) {
         uniqueName = peer.uniqueName;
         name = peer.name;
@@ -66,10 +87,17 @@ public class Peer implements Parcelable, Cloneable {
         isReconnecting = peer.isReconnecting;
         isRequestingReconnection = peer.isRequestingReconnection;
         isDisconnecting = peer.isDisconnecting;
-        clientCallbacks = peer.clientCallbacks;
+        //clientCallbacks = peer.clientCallbacks;
         mainHandler = peer.mainHandler;
     }
 
+    /**
+     * If obj is a Peer this method compare the address of the devices of the peers if they have one (if not it return false).
+     * If obj is a Channel it will do the same comparison with the peer of that channel (this is only for internal usage)
+     * This method is for advanced usages, normally you should compare the uniqueName
+     * @param obj
+     * @return true if equal false if not or missing attributes
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Peer) {
@@ -89,26 +117,57 @@ public class Peer implements Parcelable, Cloneable {
         return false;
     }
 
+    /**
+     * return the bluetooth device of the peer
+     * @return bluetooth device
+     */
     public BluetoothDevice getDevice() {
         return device;
     }
 
+    /**
+     * Call bluetoothAdapter.getRemoteDevice() passing it the address of the device of this peer and return
+     * what the method of getRemoteDevice return, this method is only for internal usage, you does't need to use it.
+     * @param bluetoothAdapter
+     * @return
+     */
     public BluetoothDevice getRemoteDevice(BluetoothAdapter bluetoothAdapter) {
         return bluetoothAdapter.getRemoteDevice(device.getAddress());
     }
 
+    /**
+     * Returns the uniqueName of this peer, the uniqueName is the real name used for advertising and contains
+     * the name + 4 random characters assigned when BluetoothCommunicator is created, this 4 random characters are saved
+     * the first time they are generated and reused as long as the app is installed on the phone, this 4 random characters
+     * are removed in the name, so the user of the library can ignore the uniqueName and use it only for know if a peer
+     * matches another (the random characters are always the same, so if the name + the 4 random characters are equals
+     * the two peers represents the same device.
+     * @return unique name
+     */
     public String getUniqueName() {
         return uniqueName;
     }
 
+    /**
+     * Returns the normal name of the peer
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the bluetooth device for this peer
+     * @param device
+     */
     public void setDevice(BluetoothDevice device) {
         this.device = device;
     }
 
+    /**
+     * Sets the unique name of this peer
+     * @param uniqueName
+     */
     public void setUniqueName(@NonNull String uniqueName) {
         if (uniqueName.length() >= 2) {
             this.uniqueName = uniqueName;
@@ -116,6 +175,10 @@ public class Peer implements Parcelable, Cloneable {
         }
     }
 
+    /**
+     * Return the normal name of this peer
+     * @return name
+     */
     @NonNull
     @Override
     public String toString() {
@@ -132,50 +195,97 @@ public class Peer implements Parcelable, Cloneable {
         }
     }
 
+    /**
+     * Returns true if the peer is hardware connected to us.
+     * For example this method returns false if this peer
+     * is connecter to us but has lost the connection and it is reconnecting, and return true if we have sent the
+     * connection request to a peer but it hasn't answered yet, because for sending a connection request the devices has
+     * to be already connected via hardware, but for the library they are not connected (when a peer refuse a connection
+     * request the hardware connection is interuupter too).
+     * @return isHardwareConnected
+     */
     public boolean isHardwareConnected() {
         return isHardwareConnected;
     }
 
+    /**
+     * Sets if the peer is hardware connected to us, this method should not be called by the user, but only from the library.
+     * @param hardwareConnected
+     */
     public void setHardwareConnected(boolean hardwareConnected) {
         isHardwareConnected = hardwareConnected;
     }
 
+    /**
+     * Returns true if this peer is connected to us
+     * @return isConnected
+     */
     public boolean isConnected() {
         return isConnected;
     }
 
+    /**
+     * Returns true if this peer is connected and is not reconnecting
+     * @return (isConnected && !isReconnecting)
+     */
     public boolean isFullyConnected() {
         return isConnected && !isReconnecting;
     }
 
+    /**
+     * Sets if this peer is connected to us, this method should not be called by the user, but only from the library.
+     * @param connected
+     */
     public void setConnected(boolean connected) {
         isConnected = connected;
     }
 
+    /**
+     * Returns true if the peer is connected to us but has lost the connection and it is trying to reconnect
+     * @return isReconnecting
+     */
     public boolean isReconnecting() {
         return isReconnecting;
     }
 
+    /**
+     * Sets if this peer is trying to reconnect with us, this method should not be called by the user, but only from the library.
+     * @param reconnecting
+     * @param connected
+     */
     public void setReconnecting(boolean reconnecting, boolean connected) {
-        if (!isReconnecting && reconnecting) {
+        /*if (!isReconnecting && reconnecting) {
             notifyReconnecting();
         } else if (isReconnecting && !reconnecting && !isConnected && connected) {
             notifyReconnected();
-        }
+        }*/
         isConnected = connected;
         isReconnecting = reconnecting;
     }
 
+    /**
+     * This method is for internal usage only
+     * @param requestingReconnection
+     */
     public void setRequestingReconnection(boolean requestingReconnection) {
         if (isReconnecting || !requestingReconnection) {
             isRequestingReconnection = requestingReconnection;
         }
     }
 
+    /**
+     * This method is for internal usage only
+     * @return
+     */
     public boolean isRequestingReconnection() {
         return isRequestingReconnection;
     }
 
+    /**
+     * Check if this peer is in the bonded devices of the phone
+     * @param bluetoothAdapter
+     * @return is bonded
+     */
     public boolean isBonded(BluetoothAdapter bluetoothAdapter) {
         ArrayList<BluetoothDevice> bondedDevices = new ArrayList<>(bluetoothAdapter.getBondedDevices());
         if (device != null) {
@@ -188,16 +298,24 @@ public class Peer implements Parcelable, Cloneable {
         return false;
     }
 
+    /**
+     * Returns true if the device is disconnecting from us
+     * @return isDisconnecting
+     */
     public boolean isDisconnecting() {
         return isDisconnecting;
     }
 
+    /**
+     * Sets if the devices is disconnecting from us, this method should not be called by the user, but only from the library.
+     * @param disconnecting
+     */
     public void setDisconnecting(boolean disconnecting) {
         isDisconnecting = disconnecting;
     }
 
 
-    public void addCallback(Callback callback) {
+    /*public void addCallback(Callback callback) {
         clientCallbacks.add(callback);
     }
 
@@ -235,7 +353,7 @@ public class Peer implements Parcelable, Cloneable {
         public void onReconnected() {
         }
 
-    }
+    }*/
 
     //parcelable implementation
     public Peer(Parcel in) {

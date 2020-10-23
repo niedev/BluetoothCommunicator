@@ -23,13 +23,16 @@ import android.os.Looper;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
 import com.bluetooth.communicator.Message;
 import com.bluetooth.communicator.Peer;
 
+import java.util.ArrayList;
+import java.util.UUID;
 
+/**
+ * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
+ * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
+ */
 public abstract class BluetoothConnection {
     //costanti
     public static final int ACCEPT = 0;
@@ -308,33 +311,106 @@ public abstract class BluetoothConnection {
     }
 
     public static class Callback {
+        /**
+         * It means you have received a connection request from another device (peer) (that have called connect)
+         * for accept the connection request and start connection call bluetoothCommunicator.acceptConnection(peer);
+         * for refusing call bluetoothCommunicator.rejectConnection(peer); (the peer must be the peer argument of onConnectionRequest).
+         * @param peer the peer that have sent the connection request
+         */
         public void onConnectionRequest(Peer peer) {
         }
 
+        /**
+         * This means that you have accepted the connection request using acceptConnection or the other
+         * device has accepted your connection request and the connection is complete, from now on you
+         * can send messages or data (or disconnection request) to this peer until onDisconnected.
+         *
+         * To send messages to all connected peers you need to create a message with a context, a header, represented by a single character string
+         * (you can use a header to distinguish between different types of messages, or you can ignore it and use a random
+         * character), the text of the message, or a series of bytes if you want to send any kind of data and the peer you want to send the message to
+         * (must be connected to avoid errors), example: new Message(context,"a","hello world",peer);
+         * If you want to send message to a specific peer you have to set the sender of the message with the corresponding peer.
+         *
+         * To send disconnection request to connected peer you need to call bluetoothCommunicator.disconnect(peer);
+         * @param peer the peer with you have established the connection
+         * @param source if in this connection you are a client (BluetoothCommunicator.CLIENT) or a server (BluetoothCommunicator.SERVER), it can be ignored.
+         */
         public void onConnectionSuccess(Peer peer, int source) {
         }
 
+        /**
+         * This means that our connection request is rejected or has other problems,
+         * to know the cause of the failure see errorCode (BluetoothConnectionClient.CONNECTION_REJECTED
+         * means rejected connection and BluetoothConnectionClient.ERROR means generic error)
+         * @param peer the peer with you have failed the connection
+         * @param errorCode the core of the error for know if the cause is a rejection or a generic problem
+         */
         public void onConnectionFailed(Peer peer, int errorCode) {
         }
 
+        /**
+         * This means that a connected peer has lost the connection with you and the library is trying
+         * to restore it, in this case you can update the gui to notify this problem.
+         *
+         * You can still send messages in this situation, all sent messages are put in a queue
+         * and sent as soon as the connection is restored.
+         * @param peer the peer with you have lost the connection
+         */
         public void onConnectionLost(Peer peer) {
         }
 
+        /**
+         * Means that connection lost is resumed successfully.
+         * @param peer
+         */
         public void onConnectionResumed(Peer peer) {
         }
 
+        /**
+         * Means that you have received a message containing TEXT, to know the sender you can call message.getSender() that return
+         * the peer that have sent the message, you can ignore source, it indicate only if you have received the message
+         * as client or as server.
+         * @param message received text message
+         * @param source indicate only if you have received the message as clients or as servers, it can be ignored
+         */
         public void onMessageReceived(Message message, int source) {
         }
 
+        /**
+         * Means that you have received a message containing DATA, to know the sender you can call message.getSender() that return
+         * the peer that have sent the message, you can ignore source, it indicate only if you have received the message
+         * as client or as server.
+         * @param data received data message
+         * @param source indicate only if you have received the message as clients or as servers, it can be ignored
+         */
         public void onDataReceived(Message data, int source) {
         }
 
+        /**
+         * It means that a founded peer (or connected peer) has changed (name or address or other things),
+         * if you have a collection of founded peers, you need to replace peer with newPeer if you want to connect successfully to that peer.
+         *
+         * In case the peer updated is connected and you have saved connected peers you have to update the peer if you want to successfully
+         * send a message or a disconnection request to that peer.
+         * @param peer
+         * @param newPeer
+         */
         public void onPeerUpdated(Peer peer, Peer newPeer) {
         }
 
+        /**
+         * This method is only for internal usage, do not override it (I know, I have to fix it sooner or later).
+         *
+         * Instead override onDisconnected(Peer peer, int peersLeft)
+         * @param peer
+         */
         public void onDisconnected(Peer peer) {
         }
 
+        /**
+         * Means that a disconnection is failed, super.onDisconnectionFailed will reactivate bluetooth for forcing disconnection,
+         * after that the disconnection will be notified in onDisconnection.
+         */
         public void onDisconnectionFailed() {
 
         }

@@ -13,15 +13,24 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * This class contains a series of static methods to help the library, for the user there is an important method however:
+ * getSupportedUTFCharacters returns the list of supported characters that the user can compare with the characters of the name
+ * that will be passed to BluetoothCommunicator in the constructor o in setName, in fact the name must not contain
+ * characters other than those supported and must not exceed 18 characters in length, otherwise BluetoothCommunicator
+ * may not work correctly.
+ */
 public class BluetoothTools {
     public static final int FIX_NUMBER = 0;
     public static final int FIX_TEXT = 1;
 
     /**
      * return all characters of UTF encoding (this is because bluetooth only support a certain amount of bytes
-     * to send to nearby devices)
+     * to send to nearby devices) so ensure that the name that will be passed to BluetoothCommunicator in the
+     * constructor o in setName contains only these character and not exceed 18 characters in length, otherwise
+     * BluetoothCommunicator may not work correctly.
      * @param context
-     * @return
+     * @return list of supported characters
      */
     public static ArrayList<Character> getSupportedUTFCharacters(Context context) {
         ArrayList<Character> characters = new ArrayList<>();
