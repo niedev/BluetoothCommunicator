@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bluetooth.communicator.connection.server;
+package com.bluetooth.communicator;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -30,13 +30,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.bluetooth.communicator.BluetoothCommunicator;
-import com.bluetooth.communicator.Message;
-import com.bluetooth.communicator.Peer;
-import com.bluetooth.communicator.connection.BluetoothConnection;
-import com.bluetooth.communicator.connection.BluetoothMessage;
-import com.bluetooth.communicator.connection.Channel;
-import com.bluetooth.communicator.connection.client.BluetoothConnectionClient;
 import com.bluetooth.communicator.tools.BluetoothTools;
 
 import java.nio.charset.StandardCharsets;
@@ -47,7 +40,7 @@ import java.util.UUID;
  * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
  * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
  */
-public class BluetoothConnectionServer extends BluetoothConnection {
+class BluetoothConnectionServer extends BluetoothConnection {
     //costants
     public static final UUID CONNECTION_REQUEST_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0857350c7a66");
     public static final UUID CONNECTION_RESPONSE_UUID = UUID.fromString("fa87c0d0-adac-11de-8a39-0857350c7a64");

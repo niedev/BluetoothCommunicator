@@ -23,8 +23,6 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bluetooth.communicator.connection.BluetoothConnection;
-import com.bluetooth.communicator.connection.BluetoothMessage;
 import com.bluetooth.communicator.tools.BluetoothTools;
 
 import java.nio.charset.StandardCharsets;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bluetooth.communicator.connection.client;
+package com.bluetooth.communicator;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -25,19 +25,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.bluetooth.communicator.Peer;
-import com.bluetooth.communicator.connection.BluetoothConnection;
-import com.bluetooth.communicator.connection.BluetoothMessage;
-import com.bluetooth.communicator.connection.Channel;
-import com.bluetooth.communicator.connection.server.BluetoothConnectionServer;
-
 import java.nio.charset.StandardCharsets;
 
 /**
  * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
  * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
  */
-public class ClientChannel extends Channel {
+class ClientChannel extends Channel {
     private BluetoothGatt bluetoothGatt;
 
 

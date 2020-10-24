@@ -25,8 +25,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.bluetooth.communicator.connection.Channel;
-
 import java.util.ArrayList;
 import java.util.Objects;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bluetooth.communicator.connection;
+package com.bluetooth.communicator;
 
 import android.content.Context;
 import android.os.Parcel;
@@ -23,8 +23,6 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bluetooth.communicator.Message;
-import com.bluetooth.communicator.Peer;
 import com.bluetooth.communicator.tools.BluetoothTools;
 
 import java.nio.charset.StandardCharsets;
@@ -34,7 +32,7 @@ import java.util.ArrayList;
  * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
  * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
  */
-public class BluetoothMessage implements Parcelable {
+class BluetoothMessage implements Parcelable {
     public static final int ID_LENGTH = 4;
     public static final int SEQUENCE_NUMBER_LENGTH = 3;
     public static final int TYPE_LENGTH = 1;

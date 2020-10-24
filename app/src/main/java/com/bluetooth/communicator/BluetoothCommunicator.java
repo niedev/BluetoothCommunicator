@@ -37,10 +37,6 @@ import android.os.ParcelUuid;
 
 import androidx.annotation.Nullable;
 
-import com.bluetooth.communicator.connection.BluetoothConnection;
-import com.bluetooth.communicator.connection.Channel;
-import com.bluetooth.communicator.connection.client.BluetoothConnectionClient;
-import com.bluetooth.communicator.connection.server.BluetoothConnectionServer;
 import com.bluetooth.communicator.tools.BluetoothTools;
 
 import java.util.ArrayDeque;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bluetooth.communicator.connection;
+package com.bluetooth.communicator;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -23,9 +23,6 @@ import android.os.Looper;
 
 import androidx.annotation.Nullable;
 
-import com.bluetooth.communicator.Message;
-import com.bluetooth.communicator.Peer;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -33,7 +30,7 @@ import java.util.UUID;
  * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
  * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
  */
-public abstract class BluetoothConnection {
+abstract class BluetoothConnection {
     //costanti
     public static final int ACCEPT = 0;
     public static final int REJECT = 1;
@@ -399,12 +396,12 @@ public abstract class BluetoothConnection {
         }
 
         /**
-         * This method is only for internal usage, do not override it (I know, I have to fix it sooner or later).
+         * This method is only for internal usage, do not override it.
          *
          * Instead override onDisconnected(Peer peer, int peersLeft)
          * @param peer
          */
-        public void onDisconnected(Peer peer) {
+        void onDisconnected(Peer peer) {
         }
 
         /**

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bluetooth.communicator.connection.client;
+package com.bluetooth.communicator;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -30,13 +30,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.bluetooth.communicator.BluetoothCommunicator;
-import com.bluetooth.communicator.Message;
-import com.bluetooth.communicator.Peer;
-import com.bluetooth.communicator.connection.BluetoothConnection;
-import com.bluetooth.communicator.connection.BluetoothMessage;
-import com.bluetooth.communicator.connection.Channel;
-import com.bluetooth.communicator.connection.server.BluetoothConnectionServer;
 import com.bluetooth.communicator.tools.BluetoothTools;
 
 import java.lang.reflect.Method;
@@ -47,7 +40,7 @@ import java.util.ArrayList;
  * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
  * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
  */
-public class BluetoothConnectionClient extends BluetoothConnection {
+class BluetoothConnectionClient extends BluetoothConnection {
     public static final int ERROR = 0;
     public static final int CONNECTION_REJECTED = 1;
     private BluetoothGattCallback channelsCallback;
