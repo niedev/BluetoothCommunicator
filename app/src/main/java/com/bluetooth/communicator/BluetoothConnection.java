@@ -337,8 +337,8 @@ abstract class BluetoothConnection {
 
         /**
          * This means that our connection request is rejected or has other problems,
-         * to know the cause of the failure see errorCode (BluetoothConnectionClient.CONNECTION_REJECTED
-         * means rejected connection and BluetoothConnectionClient.ERROR means generic error)
+         * to know the cause of the failure see errorCode (BluetoothCommunicator.CONNECTION_REJECTED
+         * means rejected connection and BluetoothCommunicator.ERROR means generic error)
          * @param peer the peer with you have failed the connection
          * @param errorCode the core of the error for know if the cause is a rejection or a generic problem
          */

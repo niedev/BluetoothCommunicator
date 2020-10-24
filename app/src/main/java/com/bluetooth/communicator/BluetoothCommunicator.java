@@ -163,8 +163,8 @@ import java.util.Objects;
  *         super.onConnectionFailed(peer,errorCode);
  *
  *         This means that your connection request is rejected or has other problems,
- *         to know the cause of the failure see errorCode (BluetoothConnectionClient.CONNECTION_REJECTED
- *         means rejected connection and BluetoothConnectionClient.ERROR means generic error)
+ *         to know the cause of the failure see errorCode (BluetoothCommunicator.CONNECTION_REJECTED
+ *         means rejected connection and BluetoothCommunicator.ERROR means generic error)
  *     }
  *
  *     @Override
@@ -235,6 +235,7 @@ public class BluetoothCommunicator {
     public static final int CLIENT = 0;
     public static final int SERVER = 1;
     public static final int SUCCESS = 0;
+    public static final int CONNECTION_REJECTED = 1;
     public static final int ERROR = -1;
     public static final int ALREADY_STARTED = -3;
     public static final int ALREADY_STOPPED = -4;

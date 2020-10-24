@@ -31,6 +31,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.bluetooth.communicator.tools.BluetoothTools;
+import com.bluetooth.communicator.tools.Timer;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -41,8 +42,6 @@ import java.util.ArrayList;
  * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
  */
 class BluetoothConnectionClient extends BluetoothConnection {
-    public static final int ERROR = 0;
-    public static final int CONNECTION_REJECTED = 1;
     private BluetoothGattCallback channelsCallback;
     private ConnectionDeque pendingConnections = new ConnectionDeque();
 
@@ -73,7 +72,7 @@ class BluetoothConnectionClient extends BluetoothConnection {
                                     gatt.discoverServices();
 
                                     final Channel channel = channels.get(index);
-                                    channel.startConnectionCompleteTimer(new Channel.Timer.Callback() {
+                                    channel.startConnectionCompleteTimer(new Timer.Callback() {
                                         @Override
                                         public void onFinished() {
                                             // means that the connection failed because it did not happen completely by the end of the timer
@@ -620,14 +619,14 @@ class BluetoothConnectionClient extends BluetoothConnection {
     private void notifyConnectionRejected(Channel channel) {
         channel.resetConnectionCompleteTimer();
         channel.disconnect(disconnectionCallback);
-        callback.onConnectionFailed((Peer) channel.getPeer().clone(), CONNECTION_REJECTED);
+        callback.onConnectionFailed((Peer) channel.getPeer().clone(), BluetoothCommunicator.CONNECTION_REJECTED);
 
         pendingConnections.removeFirst();   // remove the peer that ended the connection
     }
 
     private void notifyConnectionFailed(Channel channel) {
         channels.remove(channel);
-        callback.onConnectionFailed((Peer) channel.getPeer().clone(), ERROR);
+        callback.onConnectionFailed((Peer) channel.getPeer().clone(), BluetoothCommunicator.ERROR);
 
         pendingConnections.removeFirst();   // remove the peer that ended the connection
     }
@@ -646,7 +645,7 @@ class BluetoothConnectionClient extends BluetoothConnection {
     protected void notifyConnectionLost(final Channel channel) {
         channel.getPeer().setReconnecting(true, false);
         callback.onConnectionLost((Peer) channel.getPeer().clone());
-        channel.startReconnectionTimer(new Channel.Timer.Callback() {
+        channel.startReconnectionTimer(new Timer.Callback() {
             @Override
             public void onFinished() {
                 // reconnection failed

@@ -31,6 +31,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.bluetooth.communicator.tools.BluetoothTools;
+import com.bluetooth.communicator.tools.Timer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ class BluetoothConnectionServer extends BluetoothConnection {
                                 }
                                 if (index != -1) {
                                     final Channel channel = channels.get(index);
-                                    channel.startConnectionCompleteTimer(new Channel.Timer.Callback() {
+                                    channel.startConnectionCompleteTimer(new Timer.Callback() {
                                         @Override
                                         public void onFinished() {
                                             mainHandler.post(new Runnable() {
@@ -574,7 +575,7 @@ class BluetoothConnectionServer extends BluetoothConnection {
     protected void notifyConnectionLost(final Channel channel) {
         channel.getPeer().setReconnecting(true, false);
         callback.onConnectionLost((Peer) channel.getPeer().clone());
-        channel.startReconnectionTimer(new Channel.Timer.Callback() {
+        channel.startReconnectionTimer(new Timer.Callback() {
             @Override
             public void onFinished() {
                 // reconnection failed
