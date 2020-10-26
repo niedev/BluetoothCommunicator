@@ -75,6 +75,7 @@ bluetoothCommunicator.addCallback(new BluetoothCommunicator.Callback() {
     @Override
     public void onAdvertiseStarted() {
         super.onAdvertiseStarted();
+        
         Notify that advertise has started, if you want to do something after the start of advertising do it here, because
         after startAdvertise there is no guarantee that advertise is really started (it is delayed)
     }
