@@ -30,10 +30,6 @@ import com.bluetooth.communicator.tools.Timer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-/**
- * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
- * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
- */
 abstract class Channel {
     //timeouts of timers
     private final int RECONNECTION_TIMEOUT = 30000;

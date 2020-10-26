@@ -30,15 +30,15 @@ import java.util.ArrayDeque;
 
 /**
  * Message is used to send and receive messages using BluetoothCommunicator, in practice this class is a container for the messages that will be sent and received.
- *
+ * <br /><br />
  * In order to send a message the message object must always contain a header and the text or data (if it will be sent via BluetoothCommunicator.sendMessage text will be sent,
  * if it will be sent via BluetoothCommunicator.sendData then data will be sent).
  * If you want to specify a peer to send the message to (by default it is sent to all) then the peer must be set as receiver, you can do it in the constructor or through the Message.setReceiver method.
- *
+ * <br /><br />
  * To send a message there is no need to set the sender because the latter will not be sent, the receiver will recognize the sender through the channel in which he will receive the message,
  * in any case it is something completely transparent. The sender is used only to identify the sender of received messages, and upon receipt of a message
  * via the BluetoothCommunicator.onMessageReceived or onDataReceived method the sender will have already been automatically inserted into the message by the library, along with the text / data and header.
- *
+ * <br /><br />
  * Another way you can use the Message class is to represent messages (graphically, to save them, etc.), some Message constructors would not make sense for sending or receiving messages,
  * but they can be useful for use as representation.
  */
@@ -160,6 +160,7 @@ public class Message implements Parcelable, Cloneable {
      * Sets the header, the header is a single character that can be used to differentiate the types of message,
      * if you use a single type of message, just pick a random character for header and ignore it when receiving
      * text messages or data messages.
+     *
      * @param header must contain 1 character to avoid errors
      */
     public void setHeader(String header) {
@@ -183,11 +184,12 @@ public class Message implements Parcelable, Cloneable {
     }
 
     /**
-     * Sets the sender.
+     * Sets the sender.<br />
      * To send a message there is no need to set the sender because the latter will not be sent, the receiver will recognize the sender through the channel in which he will receive the message,
      * in any case it is something completely transparent. The sender is used only to identify the sender of received messages, and upon receipt of a message
      * via the BluetoothCommunicator.onMessageReceived or onDataReceived method the sender will have already been automatically inserted into the message by the library, along with the text / data and header.
-     * A way this method can be useful is when you are using Message for representation (for the gui, for saving messages etc.)
+     * A way this method can be useful is when you are using Message for representation (for the gui, for saving messages etc.).
+     *
      * @param sender
      */
     public void setSender(@Nullable Peer sender) {
@@ -204,8 +206,9 @@ public class Message implements Parcelable, Cloneable {
     }
 
     /**
-     * Sets the receiver.
+     * Sets the receiver.<br />
      * If you want to specify a peer to send the message to (by default it is sent to all) then the peer must be set as receiver, you can do it in the constructor or through the Message.setReceiver method.
+     *
      * @param receiver
      */
     public void setReceiver(@Nullable Peer receiver) {
@@ -214,6 +217,7 @@ public class Message implements Parcelable, Cloneable {
 
     /**
      * Return the text of the message
+     *
      * @return text
      */
     public String getText() {
@@ -222,6 +226,7 @@ public class Message implements Parcelable, Cloneable {
 
     /**
      * Sets the text of the message
+     *
      * @param text
      */
     public void setText(String text) {
@@ -230,6 +235,7 @@ public class Message implements Parcelable, Cloneable {
 
     /**
      * Return the data of the message
+     *
      * @return text
      */
     public byte[] getData() {
@@ -238,6 +244,7 @@ public class Message implements Parcelable, Cloneable {
 
     /**
      * Sets the data of the message
+     *
      * @param data
      */
     public void setData(byte[] data) {
@@ -246,6 +253,7 @@ public class Message implements Parcelable, Cloneable {
 
     /**
      * This method is used only by the library, there is no need for you to use it because the split and the reassembly of a long message is handled by the library.
+     *
      * @param id
      * @return the message splitted in more BluetoothMessages (or converted in one BluetoothMessage if the message is short enough)
      */

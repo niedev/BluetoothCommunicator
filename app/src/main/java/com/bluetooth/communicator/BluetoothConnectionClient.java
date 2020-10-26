@@ -37,10 +37,6 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-/**
- * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
- * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
- */
 class BluetoothConnectionClient extends BluetoothConnection {
     private BluetoothGattCallback channelsCallback;
     private ConnectionDeque pendingConnections = new ConnectionDeque();

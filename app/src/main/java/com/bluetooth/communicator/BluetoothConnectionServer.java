@@ -37,10 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.UUID;
 
-/**
- * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
- * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
- */
+
 class BluetoothConnectionServer extends BluetoothConnection {
     //costants
     public static final UUID CONNECTION_REQUEST_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0857350c7a66");

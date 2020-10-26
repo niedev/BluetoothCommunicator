@@ -49,19 +49,21 @@ import java.util.Objects;
  * It also automatically implements (they are active by default) reconnection in case of temporary connection loss, reliable message sending,
  * splitting and rebuilding of long messages, sending raw data in addition to text messages and a message queue in order to always send the messages (and always in the right order)
  * even in case of connection problems (they will be sent as soon as the connection is restored)
- *
+ * <br /><br />
  * First create a bluetooth communicator object, it is the object that handles all operations of bluetooth low energy library, if you want to manage
  * the bluetooth connections in multiple activities I suggest you to save this object as an attribute of a custom class that extends Application and
  * create a getter so you can access to bluetoothCommunicator from any activity or service with:
- *
+ *  <pre>{@code
  * ((custom class name) getApplication()).getBluetoothCommunicator();
+ * }</pre>
  * Next step is to initialize bluetoothCommunicator, the parameters are: a context, the name by which the other devices will see us (limited to 18 characters
  * and can be only characters listed in BluetoothTools.getSupportedUTFCharacters(context) because the number of bytes for advertising beacon is limited) and the strategy
  * (for now the only supported strategy is BluetoothCommunicator.STRATEGY_P2P_WITH_RECONNECTION)
- *
+ * <pre>{@code
  * bluetoothCommunicator = new BluetoothCommunicator(this, "device name", BluetoothCommunicator.STRATEGY_P2P_WITH_RECONNECTION);
+ * }</pre>
  * Then add the bluetooth communicator callback, the callback will listen for all events of bluetooth communicator:
- *
+ * <pre>{@code
  * bluetoothCommunicator.addCallback(new BluetoothCommunicator.Callback() {
  *     @Override
  *     public void onBluetoothLeNotSupported() {
@@ -149,11 +151,12 @@ import java.util.Objects;
  *         device has accepted your connection request and the connection is complete, from now on you
  *         can send messages or data (or disconnection request) to this peer until onDisconnected
  *
-           To send messages to all connected peers you need to create a message with a context, a header, represented by a single character string
- *         (you can use a header to distinguish between different types of messages, or you can ignore it and use a random
- *         character), the text of the message, or a series of bytes if you want to send any kind of data and the peer you want to send the message to
- *         (must be connected to avoid errors), example: new Message(context,"a","hello world",peer);
- *         If you want to send message to a specific peer you have to set the sender of the message with the corresponding peer.
+ *         To send messages to all connected peers you need to create a message with a context, a header, represented by a
+ *         single character string (you can use a header to distinguish between different types of messages, or you can ignore
+ *         it and use a random character), the text of the message, or a series of bytes if you want to send any kind of data
+ *         and the peer you want to send the message to (must be connected to avoid errors), example:
+ *         new Message(context,"a","hello world",peer); If you want to send message to a specific peer you have to set
+ *         the sender of the message with the corresponding peer.
  *
  *         To send disconnection request to connected peer you need to call bluetoothCommunicator.disconnect(peer);
  *     }
@@ -218,17 +221,20 @@ import java.util.Objects;
  *         (however the disconnection will be notified in onDisconnection)
  *     }
  * });
+ * }</pre>
  * Finally you can start discovery and/or advertising:
- *
+ * <pre>{@code
  * bluetoothCommunicator.startAdvertising();
  * bluetoothCommunicator.startDiscovery();
+ * }</pre>
  * All other actions that can be done are explained with the comments in the code of callback I wrote before.
- *
+ * <br /><br />
  * To use this library add these permissions to your manifest:
- *
+ * <pre>{@code
  * <uses-permission android:name="android.permission.BLUETOOTH"/>
  * <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
  * <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+ * }</pre>
  */
 public class BluetoothCommunicator {
     // constants
@@ -278,6 +284,7 @@ public class BluetoothCommunicator {
 
     /**
      * Constructor of BluetoothCommunicator
+     *
      * @param context
      * @param name the name by which the other devices will see us (limited to 18 characters
      * and can be only characters listed in BluetoothTools.getSupportedUTFCharacters(context) because the number of bytes for advertising beacon is limited)
@@ -429,7 +436,8 @@ public class BluetoothCommunicator {
 
     /**
      * Constructor of BluetoothCommunicator that adds a callback (it can also be added with addCallback
-     * @param context
+     *
+     * @param context context
      * @param name the name by which the other devices will see us (limited to 18 characters
      * and can be only characters listed in BluetoothTools.getSupportedUTFCharacters(context) because the number of bytes for advertising beacon is limited)
      * @param strategy (for now the only supported strategy is BluetoothCommunicator.STRATEGY_P2P_WITH_RECONNECTION)
@@ -572,7 +580,7 @@ public class BluetoothCommunicator {
     /**
      * This method start advertising, so this device can be discovered by other devices that use this library and can receive a connection request,
      * this method will eventually turn on bluetooth if it is off (BluetoothCommunicator will restore bluetooth status when both advertising and discovery are stopped)
-     *
+     * <br /><br />
      * This method must always be done from the main thread or it will return NOT_MAIN_THREAD without doing anything.
      *
      * @return SUCCESS if everithing is OK, ALREADY_STARTED if BluetoothCommunicator is already advertising, NOT_MAIN_THREAD if this method is not called
@@ -650,7 +658,7 @@ public class BluetoothCommunicator {
 
     /**
      * This method stop advertising, this method will eventually turn off bluetooth if BluetoothCommunicator turned on before and if discovery is off
-     *
+     * <br /><br />
      * This method must always be done from the main thread or it will return NOT_MAIN_THREAD without doing anything.
      *
      * @return SUCCESS if everithing is OK, ALREADY_STOPPED if BluetoothCommunicator is not advertising, NOT_MAIN_THREAD if this method is not called
@@ -712,6 +720,7 @@ public class BluetoothCommunicator {
 
     /**
      * This method will check if BluetoothLe is supported by the device (rarely it can indicate a general bluetooth error, not an incompatibility with bluetooth le)
+     *
      * @return SUCCESS if bluetooth le is supported, BLUETOOTH_LE_NOT_SUPPORTED if not (or rarely if we had a generic bluetooth problem)
      */
     public int isBluetoothLeSupported() {
@@ -725,7 +734,7 @@ public class BluetoothCommunicator {
     /**
      * This method start discovery so BluetoothCommunicator can discover advertising devices and notify them with onPeerFound,
      * this method will eventually turn on bluetooth if it is off (BluetoothCommunicator will restore bluetooth status when both advertising and discovery are stopped)
-     *
+     * <br /><br />
      * This method must always be done from the main thread or it will return NOT_MAIN_THREAD without doing anything.
      *
      * @return SUCCESS if everithing is OK, ALREADY_STARTED if BluetoothCommunicator is already advertising, NOT_MAIN_THREAD if this method is not called
@@ -799,7 +808,7 @@ public class BluetoothCommunicator {
 
     /**
      * This method stop discovery, this method will eventually turn off bluetooth if BluetoothCommunicator turned on before and if advertising is off
-     *
+     * <br /><br />
      * This method must always be done from the main thread or it will return NOT_MAIN_THREAD without doing anything.
      *
      * @return SUCCESS if everithing is OK, ALREADY_STOPPED if BluetoothCommunicator is not discovering, NOT_MAIN_THREAD if this method is not called
@@ -858,6 +867,7 @@ public class BluetoothCommunicator {
     /**
      * This method will send the text contained in message to the peer contained in the receiver attribute of the message (only if that peer is connected), if receiver is not set
      * the message will be sent to all the connected peers
+     *
      * @param message message to be sent
      */
     public void sendMessage(final Message message) {
@@ -897,6 +907,7 @@ public class BluetoothCommunicator {
     /**
      * This method will send the data contained in message to the peer contained in the receiver attribute of the message (only if that peer is connected), if receiver is not set
      * the message will be sent to all the connected peers
+     *
      * @param data message to be sent
      */
     public void sendData(final Message data) {
@@ -937,9 +948,10 @@ public class BluetoothCommunicator {
      * this method set the name with which you would be seen by other devices, the name must be limited to 18 characters
      * and can be only characters listed in BluetoothTools.getSupportedUTFCharacters(context) because the number of bytes for advertising beacon is limited,
      * there is no controls for this so if you not follow these restrictions BluetoothCommunicator will not work correctly.
-     *
+     * <br /><br />
      * To the name will be added 4 random symbols in a completely transparent way (this 4 symbols will exixts only inside BluetoothCommunicator, which removes them before the name gets on the outside),
      * this allows to have a unique identification (for BluetoothCommunicator, not for the user) even for peers with the same name
+     *
      * @param name
      * @return SUCCESS if bluetooth le is supported by the device or BLUETOOTH_LE_NOT_SUPPORTED if not (or rarely if we had a generic bluetooth problem)
      */
@@ -981,6 +993,7 @@ public class BluetoothCommunicator {
     /**
      * This method must be used after you have received a connection request to accept it and complete the connection (the connection is complete when
      * onConnectionSuccess is called)
+     *
      * @param peer the peer that has sent the connection request that we want to accept
      * @return SUCCESS if bluetooth le is supported by the device or BLUETOOTH_LE_NOT_SUPPORTED if not (or rarely if we had a generic bluetooth problem)
      */
@@ -994,7 +1007,8 @@ public class BluetoothCommunicator {
     }
 
     /**
-     * This method must be used after you have received a connection request to reject it and cancel the connection
+     * This method must be used after you have received a connection request to reject it and cancel the connection.
+     *
      * @param peer the peer that has sent the connection request that you want to accept
      * @return SUCCESS if bluetooth le is supported by the device or BLUETOOTH_LE_NOT_SUPPORTED if not (or rarely if we had a generic bluetooth problem)
      */
@@ -1009,6 +1023,7 @@ public class BluetoothCommunicator {
 
     /**
      * This method is used to know if BluetoothCommunicator is advertising
+     *
      * @return advertising
      */
     public boolean isAdvertising() {
@@ -1026,7 +1041,8 @@ public class BluetoothCommunicator {
     /**
      * This method must be used to send a connection request to a founded peer, successfully you can know if it has accepted or rejected the connection listening
      * onConnectionSuccess and onConnectionFailed
-     * @param peer
+     *
+     * @param peer found peer you want to connect with
      * @return SUCCESS if everything is gone OK, BLUETOOTH_LE_NOT_SUPPORTED if bluetooth le is not supported (or rarely if we had a generic bluetooth problem)
      * or DESTROYING if destroy() is called before
      */
@@ -1055,6 +1071,7 @@ public class BluetoothCommunicator {
 
     /**
      * This method return the bluetooth adapter used by BluetoothCommunicator
+     *
      * @return bluetoothAdapter
      */
     public BluetoothAdapter getBluetoothAdapter() {
@@ -1066,8 +1083,9 @@ public class BluetoothCommunicator {
      * when onDisconnected is called with that peer as argument, in case the disconnection fails onDisconnectionFailed is called but if you not
      * override it or leave the call to super BluetoothCommunicator will turn off and on bluetooth to force the disconnection and onDisconnection will be
      * called.
-     * @param peer
-     * @return
+     *
+     * @param peer connected peer you want to disconnect from
+     * @return SUCCESS if bluetooth le is supported by the device or BLUETOOTH_LE_NOT_SUPPORTED if not (or rarely if we had a generic bluetooth problem)
      */
     public int disconnect(final Peer peer) {
         synchronized (bluetoothLock) {
@@ -1089,6 +1107,7 @@ public class BluetoothCommunicator {
 
     /**
      * This method will call disconnect for all the connected peers
+     *
      * @return SUCCESS if bluetooth le is supported by the device or BLUETOOTH_LE_NOT_SUPPORTED if not (or rarely if we had a generic bluetooth problem)
      */
     public int disconnectFromAll() {
@@ -1124,10 +1143,19 @@ public class BluetoothCommunicator {
     }
 
 
+    /**
+     * With this method you can add the callback for listening all the events of BluetoothCommunicator
+     *
+     * @param callback callback for listening all the events of BluetoothCommunicator
+     */
     public void addCallback(Callback callback) {
         clientCallbacks.add(callback);
     }
 
+    /**
+     * This remote will remove the callback you pass as argument from the list of callback of this class, so this callback will not receive method call anymore
+     * @param callback callback for listening all the events of BluetoothCommunicator
+     */
     public void removeCallback(Callback callback) {
         clientCallbacks.remove(callback);
     }
@@ -1320,12 +1348,13 @@ public class BluetoothCommunicator {
 
         /**
          * Notify that a Peer is found with the discovery.
-         *
+         * <br /><br />
          * Here for example you can save peer in a list or anywhere you want and when the user
          * choose a peer you can call bluetoothCommunicator.connect(peer founded) but if you want to
          * use a peer for connect you have to have peer updated (see onPeerUpdated or onPeerLost), if you use a
          * non updated peer the connection might fail
-         * instead if you want to immediate connect where peer is found you can call bluetoothCommunicator.connect(peer) here
+         * instead if you want to immediate connect where peer is found you can call bluetoothCommunicator.connect(peer) here.
+         *
          * @param peer founded peer
          */
         public void onPeerFound(Peer peer) {
@@ -1333,8 +1362,9 @@ public class BluetoothCommunicator {
 
         /**
          * Notify that a peer is out of range or has interrupted the advertise.
+         * <br /><br />
+         * Here you can delete the peer lost from a eventual collection of founded peers.
          *
-         * Here you can delete the peer lost from a eventual collection of founded peers
          * @param peer
          */
         public void onPeerLost(Peer peer) {
@@ -1342,6 +1372,7 @@ public class BluetoothCommunicator {
 
         /**
          * Notify that a peer is disconnected, peersLeft indicate the number of connected peers remained
+         *
          * @param peer disconnected peer
          * @param peersLeft remaining peers connected
          */

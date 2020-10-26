@@ -29,10 +29,6 @@ import com.bluetooth.communicator.tools.Timer;
 
 import java.nio.charset.StandardCharsets;
 
-/**
- * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
- * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
- */
 class ClientChannel extends Channel {
     private BluetoothGatt bluetoothGatt;
 

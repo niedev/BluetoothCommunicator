@@ -29,6 +29,7 @@ public class BluetoothTools {
      * to send to nearby devices) so ensure that the name that will be passed to BluetoothCommunicator in the
      * constructor o in setName contains only these character and not exceed 18 characters in length, otherwise
      * BluetoothCommunicator may not work correctly.
+     *
      * @param context
      * @return list of supported characters
      */

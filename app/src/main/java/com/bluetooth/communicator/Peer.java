@@ -30,11 +30,11 @@ import java.util.Objects;
 
 /**
  * This class represents a device that we can find, with which we can establish a connection, and communicate (obviously in that order).
- *
+ * <br /><br />
  * Usually there is no need to create a peer, in fact we should start using it when it is found (BluetoothCommunicator.onPeerFound), later we can use the
  * found peer to request a connection (BluetoothCommunicator.connect) to the latter and if the peer accepts the connection request
  * (BluetoothCommunicator.onConnectionSuccess) then we can start exchanging messages with him and eventually make a disconnection.
- *
+ * <br /><br />
  * To understand if one peer is equivalent to another we should compare the uniqueName of the two peers, this is because the device
  * can vary over time and name could have a homonym.
  */
@@ -55,6 +55,7 @@ public class Peer implements Parcelable, Cloneable {
     /**
      * This constructor is used internally by BluetoothCommunicator, you shouldn't create a Peer but instead use the peers founded by
      * the discovery.
+     *
      * @param device
      * @param uniqueName
      * @param isConnected
@@ -73,7 +74,8 @@ public class Peer implements Parcelable, Cloneable {
     }
 
     /**
-     * Copy constructor
+     * Copy constructor.
+     *
      * @param peer peer to copy
      */
     public Peer(Peer peer) {
@@ -92,7 +94,8 @@ public class Peer implements Parcelable, Cloneable {
     /**
      * If obj is a Peer this method compare the address of the devices of the peers if they have one (if not it return false).
      * If obj is a Channel it will do the same comparison with the peer of that channel (this is only for internal usage)
-     * This method is for advanced usages, normally you should compare the uniqueName
+     * This method is for advanced usages, normally you should compare the uniqueName.
+     *
      * @param obj
      * @return true if equal false if not or missing attributes
      */
@@ -116,7 +119,8 @@ public class Peer implements Parcelable, Cloneable {
     }
 
     /**
-     * return the bluetooth device of the peer
+     * return the bluetooth device of the peer.
+     *
      * @return bluetooth device
      */
     public BluetoothDevice getDevice() {
@@ -126,8 +130,9 @@ public class Peer implements Parcelable, Cloneable {
     /**
      * Call bluetoothAdapter.getRemoteDevice() passing it the address of the device of this peer and return
      * what the method of getRemoteDevice return, this method is only for internal usage, you does't need to use it.
+     *
      * @param bluetoothAdapter
-     * @return
+     * @return remote device
      */
     public BluetoothDevice getRemoteDevice(BluetoothAdapter bluetoothAdapter) {
         return bluetoothAdapter.getRemoteDevice(device.getAddress());
@@ -140,6 +145,7 @@ public class Peer implements Parcelable, Cloneable {
      * are removed in the name, so the user of the library can ignore the uniqueName and use it only for know if a peer
      * matches another (the random characters are always the same, so if the name + the 4 random characters are equals
      * the two peers represents the same device.
+     *
      * @return unique name
      */
     public String getUniqueName() {
@@ -147,15 +153,17 @@ public class Peer implements Parcelable, Cloneable {
     }
 
     /**
-     * Returns the normal name of the peer
-     * @return
+     * Returns the normal name of the peer.
+     *
+     * @return name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Sets the bluetooth device for this peer
+     * Sets the bluetooth device for this peer.
+     *
      * @param device
      */
     public void setDevice(BluetoothDevice device) {
@@ -163,7 +171,8 @@ public class Peer implements Parcelable, Cloneable {
     }
 
     /**
-     * Sets the unique name of this peer
+     * Sets the unique name of this peer.
+     *
      * @param uniqueName
      */
     public void setUniqueName(@NonNull String uniqueName) {
@@ -174,7 +183,8 @@ public class Peer implements Parcelable, Cloneable {
     }
 
     /**
-     * Return the normal name of this peer
+     * Return the normal name of this peer.
+     *
      * @return name
      */
     @NonNull
@@ -194,12 +204,13 @@ public class Peer implements Parcelable, Cloneable {
     }
 
     /**
-     * Returns true if the peer is hardware connected to us.
+     * Returns true if the peer is hardware connected to us.<br />
      * For example this method returns false if this peer
-     * is connecter to us but has lost the connection and it is reconnecting, and return true if we have sent the
+     * is connected to us but has lost the connection and it is reconnecting, and return true if we have sent the
      * connection request to a peer but it hasn't answered yet, because for sending a connection request the devices has
      * to be already connected via hardware, but for the library they are not connected (when a peer refuse a connection
-     * request the hardware connection is interuupter too).
+     * request the hardware connection is interrupted too).
+     *
      * @return isHardwareConnected
      */
     public boolean isHardwareConnected() {
@@ -208,6 +219,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * Sets if the peer is hardware connected to us, this method should not be called by the user, but only from the library.
+     *
      * @param hardwareConnected
      */
     public void setHardwareConnected(boolean hardwareConnected) {
@@ -215,7 +227,8 @@ public class Peer implements Parcelable, Cloneable {
     }
 
     /**
-     * Returns true if this peer is connected to us
+     * Returns true if this peer is connected to us.
+     *
      * @return isConnected
      */
     public boolean isConnected() {
@@ -224,6 +237,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * Returns true if this peer is connected and is not reconnecting
+     *
      * @return (isConnected && !isReconnecting)
      */
     public boolean isFullyConnected() {
@@ -232,6 +246,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * Sets if this peer is connected to us, this method should not be called by the user, but only from the library.
+     *
      * @param connected
      */
     public void setConnected(boolean connected) {
@@ -240,6 +255,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * Returns true if the peer is connected to us but has lost the connection and it is trying to reconnect
+     *
      * @return isReconnecting
      */
     public boolean isReconnecting() {
@@ -248,6 +264,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * Sets if this peer is trying to reconnect with us, this method should not be called by the user, but only from the library.
+     *
      * @param reconnecting
      * @param connected
      */
@@ -263,6 +280,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * This method is for internal usage only
+     *
      * @param requestingReconnection
      */
     public void setRequestingReconnection(boolean requestingReconnection) {
@@ -273,6 +291,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * This method is for internal usage only
+     *
      * @return
      */
     public boolean isRequestingReconnection() {
@@ -281,6 +300,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * Check if this peer is in the bonded devices of the phone
+     *
      * @param bluetoothAdapter
      * @return is bonded
      */
@@ -298,6 +318,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * Returns true if the device is disconnecting from us
+     *
      * @return isDisconnecting
      */
     public boolean isDisconnecting() {
@@ -306,6 +327,7 @@ public class Peer implements Parcelable, Cloneable {
 
     /**
      * Sets if the devices is disconnecting from us, this method should not be called by the user, but only from the library.
+     *
      * @param disconnecting
      */
     public void setDisconnecting(boolean disconnecting) {

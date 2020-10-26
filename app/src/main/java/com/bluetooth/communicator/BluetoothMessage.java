@@ -28,10 +28,6 @@ import com.bluetooth.communicator.tools.BluetoothTools;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-/**
- * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
- * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
- */
 class BluetoothMessage implements Parcelable {
     public static final int ID_LENGTH = 4;
     public static final int SEQUENCE_NUMBER_LENGTH = 3;

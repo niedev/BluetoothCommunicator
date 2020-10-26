@@ -26,10 +26,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-/**
- * This class is used only for the internal function of BluetoothCommunicator, there is no need to use this class,
- * instead see the classes: BluetoothCommunicator, Peer, Message and BluetoothTools
- */
+
 abstract class BluetoothConnection {
     //costanti
     public static final int ACCEPT = 0;
@@ -312,6 +309,7 @@ abstract class BluetoothConnection {
          * It means you have received a connection request from another device (peer) (that have called connect)
          * for accept the connection request and start connection call bluetoothCommunicator.acceptConnection(peer);
          * for refusing call bluetoothCommunicator.rejectConnection(peer); (the peer must be the peer argument of onConnectionRequest).
+         *
          * @param peer the peer that have sent the connection request
          */
         public void onConnectionRequest(Peer peer) {
@@ -321,14 +319,15 @@ abstract class BluetoothConnection {
          * This means that you have accepted the connection request using acceptConnection or the other
          * device has accepted your connection request and the connection is complete, from now on you
          * can send messages or data (or disconnection request) to this peer until onDisconnected.
-         *
+         * <br /><br />
          * To send messages to all connected peers you need to create a message with a context, a header, represented by a single character string
          * (you can use a header to distinguish between different types of messages, or you can ignore it and use a random
          * character), the text of the message, or a series of bytes if you want to send any kind of data and the peer you want to send the message to
          * (must be connected to avoid errors), example: new Message(context,"a","hello world",peer);
          * If you want to send message to a specific peer you have to set the sender of the message with the corresponding peer.
-         *
+         * <br /><br />
          * To send disconnection request to connected peer you need to call bluetoothCommunicator.disconnect(peer);
+         *
          * @param peer the peer with you have established the connection
          * @param source if in this connection you are a client (BluetoothCommunicator.CLIENT) or a server (BluetoothCommunicator.SERVER), it can be ignored.
          */
@@ -338,7 +337,8 @@ abstract class BluetoothConnection {
         /**
          * This means that our connection request is rejected or has other problems,
          * to know the cause of the failure see errorCode (BluetoothCommunicator.CONNECTION_REJECTED
-         * means rejected connection and BluetoothCommunicator.ERROR means generic error)
+         * means rejected connection and BluetoothCommunicator.ERROR means generic error).
+         *
          * @param peer the peer with you have failed the connection
          * @param errorCode the core of the error for know if the cause is a rejection or a generic problem
          */
@@ -348,9 +348,10 @@ abstract class BluetoothConnection {
         /**
          * This means that a connected peer has lost the connection with you and the library is trying
          * to restore it, in this case you can update the gui to notify this problem.
-         *
+         * <br /><br />
          * You can still send messages in this situation, all sent messages are put in a queue
          * and sent as soon as the connection is restored.
+         *
          * @param peer the peer with you have lost the connection
          */
         public void onConnectionLost(Peer peer) {
@@ -358,6 +359,7 @@ abstract class BluetoothConnection {
 
         /**
          * Means that connection lost is resumed successfully.
+         *
          * @param peer
          */
         public void onConnectionResumed(Peer peer) {
@@ -367,6 +369,7 @@ abstract class BluetoothConnection {
          * Means that you have received a message containing TEXT, to know the sender you can call message.getSender() that return
          * the peer that have sent the message, you can ignore source, it indicate only if you have received the message
          * as client or as server.
+         *
          * @param message received text message
          * @param source indicate only if you have received the message as clients or as servers, it can be ignored
          */
@@ -377,6 +380,7 @@ abstract class BluetoothConnection {
          * Means that you have received a message containing DATA, to know the sender you can call message.getSender() that return
          * the peer that have sent the message, you can ignore source, it indicate only if you have received the message
          * as client or as server.
+         *
          * @param data received data message
          * @param source indicate only if you have received the message as clients or as servers, it can be ignored
          */
@@ -386,9 +390,10 @@ abstract class BluetoothConnection {
         /**
          * It means that a founded peer (or connected peer) has changed (name or address or other things),
          * if you have a collection of founded peers, you need to replace peer with newPeer if you want to connect successfully to that peer.
-         *
+         * <br /><br />
          * In case the peer updated is connected and you have saved connected peers you have to update the peer if you want to successfully
          * send a message or a disconnection request to that peer.
+         *
          * @param peer
          * @param newPeer
          */
@@ -397,8 +402,9 @@ abstract class BluetoothConnection {
 
         /**
          * This method is only for internal usage, do not override it.
+         * <br /><br />
+         * Instead override onDisconnected(Peer peer, int peersLeft).
          *
-         * Instead override onDisconnected(Peer peer, int peersLeft)
          * @param peer
          */
         void onDisconnected(Peer peer) {
