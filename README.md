@@ -6,7 +6,7 @@ BluetoothCommunicator was originally created for <a href="https://github.com/nie
   <img src="https://github.com/niedev/BluetoothCommunicatorExample/blob/main/images/Screenshot_pairing.jpg" width="260" />
   <img src="https://github.com/niedev/BluetoothCommunicatorExample/blob/main/images/Screenshot_chat1.jpg" width="267" /> 
   <img src="https://github.com/niedev/BluetoothCommunicatorExample/blob/main/images/Screenshot_chat2.jpg" width="260" />
-</p><br />
+</p>
 
 ### Features
 BluetoothCommunicator automatically implements (they are active by default):
@@ -15,7 +15,7 @@ BluetoothCommunicator automatically implements (they are active by default):
 
     - splitting and rebuilding of long messages.
 
-    - sending messages with a queue in order to always send the messages even in case of connection problems (they will be sent as soon as the connection is restored) and in the right order.<br /><br />
+    - sending messages with a queue in order to always send the messages even in case of connection problems (they will be sent as soon as the connection is restored) and in the right order.<br /><br /><br />
 
 ### Tutorial
 For use the library in a project you have to add jitpack.io to your root build.gradle (project):
