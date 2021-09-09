@@ -25,14 +25,21 @@ To use this library add these permissions to your manifest:
 ```
 <uses-permission android:name="android.permission.BLUETOOTH"/>
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 ```
+
+If you need to use bluetooth advertising or search in background you need to add also the following permission:
+```
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+```
+
 Then add android:largeHeap="true" to the application tag in the manifest:<br />
 Example
 ```
 <uses-permission android:name="android.permission.BLUETOOTH" />
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
 <application
     android:name="com.bluetooth.communicatorexample.Global"
