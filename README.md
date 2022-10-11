@@ -249,10 +249,21 @@ bluetoothCommunicator.startDiscovery();
 All other actions that can be done are explained with the comments in the code of callback I wrote before.
 For more details see the code of the example app (<a href="https://github.com/niedev/BluetoothCommunicatorExample" target="_blank" rel="noopener noreferrer">BluetoothCommunicatorExample</a>)
 
-#### Advanced
+### Advanced
 For anyone who wants to examinate the library code and generate the .aar file after clone the library on Android Studio:
 click on the "Gradle" tab in the right edge of Android Studio, then click on BluetoothCommunicator -> app -> Task -> build -> assemble, then go to the local folder of the BluetoothCommunicator project and click on app -> build -> outputs -> aar, here will be the debug and release .aar files
 
-#### Bugs and problems
+### Donations
+
+This is an open source project, I don't make any money from it.
+
+So, if you found this project useful and want to say thank you and support it, you can make a donation via paypal by clicking on the button below (any amount is well accepted).
+
+<a href='https://www.paypal.com/donate/?business=3VBKS3WC6AFHN&no_recurring=0&currency_code=EUR'><img alt='Donate' src='https://raw.githubusercontent.com/niedev/RTranslator/master/images/Paypal.png' style="width: 190px; height: 80px;" /></a>
+
+In case you will donate, thank you :heart:
+<br /><br />
+
+### Bugs and problems
 Avoid to have installed on your phone multiple apps that use this library, because in that case the bluetooth connection will have problems (maybe it is due to the fact that they are running advertising with the same UUID, try downloading the source files and changing the advertising UUID in the code if you want to try to fix).
 In case you have multiple apps using this library, uninstall all but one of them and restart your device in case of problems.
