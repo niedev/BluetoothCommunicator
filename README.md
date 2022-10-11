@@ -248,10 +248,12 @@ bluetoothCommunicator.startDiscovery();
 ```
 All other actions that can be done are explained with the comments in the code of callback I wrote before.
 For more details see the code of the example app (<a href="https://github.com/niedev/BluetoothCommunicatorExample" target="_blank" rel="noopener noreferrer">BluetoothCommunicatorExample</a>)
+<br /><br />
 
 ### Advanced
 For anyone who wants to examinate the library code and generate the .aar file after clone the library on Android Studio:
 click on the "Gradle" tab in the right edge of Android Studio, then click on BluetoothCommunicator -> app -> Task -> build -> assemble, then go to the local folder of the BluetoothCommunicator project and click on app -> build -> outputs -> aar, here will be the debug and release .aar files
+<br /><br />
 
 ### Donations
 
