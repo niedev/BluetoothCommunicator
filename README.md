@@ -255,6 +255,11 @@ For anyone who wants to examinate the library code and generate the .aar file af
 click on the "Gradle" tab in the right edge of Android Studio, then click on BluetoothCommunicator -> app -> Task -> build -> assemble, then go to the local folder of the BluetoothCommunicator project and click on app -> build -> outputs -> aar, here will be the debug and release .aar files
 <br /><br />
 
+### Communication Protocol
+If you want to know how this library works go check the [analysis of it's communication protocol](https://github.com/niedev/BluetoothCommunicator/blob/master/PROTOCOL_ANALYSIS.md).
+<br /><br />
+
+
 ### Donations
 
 This is an open source project, I don't make any money from it.
